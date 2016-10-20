@@ -1,5 +1,5 @@
 (function() {
-'use strict'
+  'use strict'
 
   var movies = [];
 
@@ -17,7 +17,9 @@
         'data-tooltip': movie.Title
       });
 
-      $title.tooltip({ delay: 50, });
+      $title.tooltip({
+        delay: 50,
+      });
       $title.text(movie.Title);
 
       var $Poster = $('<img class="Poster">');
@@ -58,36 +60,36 @@
 
   //mine
   window.onload = function() {
- // var className = document.getElementsByClassName("btn-large waves-effect waves-light")[0];
- var className = document.getElementsByClassName("btn-large")[0];
- className.addEventListener('click', function(){
-     // console.log("i'm working")
- })
- className.addEventListener('click', doAjax);
- // console.log(className);
-}
+    // var className = document.getElementsByClassName("btn-large waves-effect waves-light")[0];
+    var className = document.getElementsByClassName("btn-large")[0];
+    className.addEventListener('click', function() {
+      // console.log("i'm working")
+    })
+    className.addEventListener('click', doAjax);
+    // console.log(className);
+  }
 
 
-// event.preventDefault();
-// console.log(className);
+  // event.preventDefault();
+  // console.log(className);
 
-function doAjax(event) {
- let title = document.getElementById('input').value;
- // console.log(title);
- event.preventDefault();
+  function doAjax(event) {
+    let title = document.getElementById('input').value;
+    // console.log(title);
+    event.preventDefault();
 
 
- jQuery.ajax({
-   url: 'https://www.omdbapi.com/?t=' + title + '&y=&plot=short&r=json',
-   method: "GET",
-   success: function(data) {
-     console.log(data);
-     movies.push(data);
-     renderMovies();
+    jQuery.ajax({
+      url: 'https://www.omdbapi.com/?t=' + title + '&y=&plot=short&r=json',
+      method: "GET",
+      success: function(data) {
+        console.log(data);
+        movies.push(data);
+        renderMovies();
 
-   }
- });
-}
+      }
+    });
+  }
 
 
 
