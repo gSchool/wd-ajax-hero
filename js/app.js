@@ -1,5 +1,5 @@
 (function() {
-  'use strict';
+  'use strict'
 
   var movies = [];
 
@@ -14,20 +14,22 @@
 
       $title.attr({
         'data-position': 'top',
-        'data-tooltip': movie.title
+        'data-tooltip': movie.Title
       });
 
-      $title.tooltip({ delay: 50, });
-      $title.text(movie.title);
+      $title.tooltip({
+        delay: 50,
+      });
+      $title.text(movie.Title);
 
-      var $poster = $('<img class="poster">');
+      var $Poster = $('<img class="Poster">');
 
-      $poster.attr({
-        src: movie.poster,
-        alt: `${movie.poster} Poster`
+      $Poster.attr({
+        src: movie.Poster,
+        alt: `${movie.Poster} Poster`
       });
 
-      $content.append($title, $poster);
+      $content.append($title, $Poster);
       $card.append($content);
 
       var $action = $('<div class="card-action center">');
@@ -41,9 +43,9 @@
 
       var $modal = $(`<div id="${movie.id}" class="modal">`);
       var $modalContent = $('<div class="modal-content">');
-      var $modalHeader = $('<h4>').text(movie.title);
-      var $movieYear = $('<h6>').text(`Released in ${movie.year}`);
-      var $modalText = $('<p>').text(movie.plot);
+      var $modalHeader = $('<h4>').text(movie.Title);
+      var $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
+      var $modalText = $('<p>').text(movie.Plot);
 
       $modalContent.append($modalHeader, $movieYear, $modalText);
       $modal.append($modalContent);
@@ -56,5 +58,39 @@
     }
   };
 
-  // ADD YOUR CODE HERE
+  //mine
+  window.onload = function() {
+    // var className = document.getElementsByClassName("btn-large waves-effect waves-light")[0];
+    var className = document.getElementsByClassName("btn-large")[0];
+    className.addEventListener('click', function() {
+      // console.log("i'm working")
+    })
+    className.addEventListener('click', doAjax);
+    // console.log(className);
+  }
+
+
+  // event.preventDefault();
+  // console.log(className);
+
+  function doAjax(event) {
+    let title = document.getElementById('input').value;
+    // console.log(title);
+    event.preventDefault();
+
+
+    jQuery.ajax({
+      url: 'https://www.omdbapi.com/?t=' + title + '&y=&plot=short&r=json',
+      method: "GET",
+      success: function(data) {
+        console.log(data);
+        movies.push(data);
+        renderMovies();
+
+      }
+    });
+  }
+
+
+
 })();
