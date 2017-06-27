@@ -56,6 +56,10 @@
     }
   };
 
+  function updatePlot(id, plot) {
+    $(`#${id} .modal-content p`).text(plot);
+  }
+
   // ADD YOUR CODE HERE
   $("form").submit(function(event) {
     event.preventDefault();
@@ -99,12 +103,13 @@
       if ($xhrPlot.status !== 200) {
         return;
       }
+
       for (const movie of movies) {
         if (movie.id === plotData.imdbID) {
           movie.plot = plotData.Plot;
+          updatePlot(movie.id, movie.plot);
         }
       }
-      renderMovies();
     });
   }
 
