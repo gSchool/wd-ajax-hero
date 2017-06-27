@@ -2,6 +2,8 @@
   'use strict';
 
   let movies = [];
+  let page = 1;
+  let searchString = "";
 
   const renderMovies = function() {
     $('#listings').empty();
@@ -63,37 +65,12 @@
   // ADD YOUR CODE HERE
   $("form").submit(function(event) {
     event.preventDefault();
+    movies = [];
+    page = 1;
 
-    const searchString = $("#search").val();
+    searchString = $("#search").val();
 
-    if (searchString) {
-      movies = [];
-
-      const $xhr = $.getJSON(`https://omdb-api.now.sh/?s=${searchString}`);
-
-      $xhr.done(function(data) {
-        if ($xhr.status !== 200) {
-            return;
-        }
-        for (const movie of data.Search) {
-
-          let posterURL = "";
-
-          if (movie.Poster === "N/A") {
-            posterURL = "https://subdict.org/Content/Images/movie-poster-placeholder.jpg";
-          }
-          else {
-            posterURL = movie.Poster;
-          }
-
-          movies.push({id: movie.imdbID, title: movie.Title, year: movie.Year, poster: posterURL});
-
-          getPlot(movie.imdbID);
-        }
-
-        renderMovies();
-      });
-    }
+    getMovies(searchString);
   });
 
   function getPlot(imdbID) {
@@ -112,5 +89,52 @@
       }
     });
   }
+
+  function getMovies(searchString) {
+    if (searchString) {
+      const $xhr = $.getJSON(`https://omdb-api.now.sh/?s=${searchString}&page=${page}`);
+
+      $xhr.done(function(data) {
+        if ($xhr.status !== 200) {
+            return;
+        }
+
+        for (const movie of data.Search) {
+          let posterURL = "";
+
+          if (movie.Poster === "N/A") {
+            posterURL = "https://subdict.org/Content/Images/movie-poster-placeholder.jpg";
+          }
+          else {
+            posterURL = movie.Poster;
+          }
+
+          movies.push({id: movie.imdbID, title: movie.Title, year: movie.Year, poster: posterURL});
+
+          getPlot(movie.imdbID);
+        }
+
+        renderMovies();
+        $(window).one("scroll", handleScroll);
+      });
+    }
+  }
+
+  function incrementPage() {
+    page++;
+    getMovies(searchString);
+  }
+
+  function handleScroll(event) {
+    let scrollPercent = 100 * $(window).scrollTop() / ($(document).height() - $(window).height());
+    if (scrollPercent >= 80) {
+      incrementPage(searchString);
+    }
+    else {
+      $(window).one("scroll", handleScroll);
+    }
+  }
+
+  $(window).one("scroll", handleScroll);
 
 })();
