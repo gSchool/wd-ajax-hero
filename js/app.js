@@ -127,7 +127,7 @@
 
   function handleScroll(event) {
     let scrollPercent = 100 * $(window).scrollTop() / ($(document).height() - $(window).height());
-    if (scrollPercent >= 80) {
+    if (scrollPercent >= 95) {
       incrementPage(searchString);
     }
     else {
