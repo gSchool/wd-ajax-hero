@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  const movies = [];
+  let movies = [];
 
   const renderMovies = function() {
     $('#listings').empty();
@@ -57,4 +57,55 @@
   };
 
   // ADD YOUR CODE HERE
+  $("form").submit(function(event) {
+    event.preventDefault();
+
+    const searchString = $("#search").val();
+
+    if (searchString) {
+      movies = [];
+
+      const $xhr = $.getJSON(`https://omdb-api.now.sh/?s=${searchString}`);
+
+      $xhr.done(function(data) {
+        if ($xhr.status !== 200) {
+            return;
+        }
+        for (const movie of data.Search) {
+
+          let posterURL = "";
+
+          if (movie.Poster === "N/A") {
+            posterURL = "https://subdict.org/Content/Images/movie-poster-placeholder.jpg";
+          }
+          else {
+            posterURL = movie.Poster;
+          }
+
+          movies.push({id: movie.imdbID, title: movie.Title, year: movie.Year, poster: posterURL});
+
+          getPlot(movie.imdbID);
+        }
+
+        renderMovies();
+      });
+    }
+  });
+
+  function getPlot(imdbID) {
+    const $xhrPlot = $.getJSON(`http://www.omdbapi.com/?apikey=19099f8d&i=${imdbID}&plot=full`);
+
+    $xhrPlot.done(function(plotData) {
+      if ($xhrPlot.status !== 200) {
+        return;
+      }
+      for (const movie of movies) {
+        if (movie.id === plotData.imdbID) {
+          movie.plot = plotData.Plot;
+        }
+      }
+      renderMovies();
+    });
+  }
+
 })();
