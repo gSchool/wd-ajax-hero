@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  const movies = [];
+  let movies = [];
 
   const renderMovies = function() {
     $('#listings').empty();
@@ -56,5 +56,38 @@
     }
   };
 
-  // ADD YOUR CODE HERE
+
+// add getMovies function
+  const getMovies = function(searchTerm) {
+    const url = `https://www.omdbapi.com/?apikey=19099f8d&s=${searchTerm}`;
+    const $xhr = $.getJSON(url);
+
+    $xhr.done(function(data) {
+      if ($xhr.status!== 200) {
+        return
+      }
+      movies = data.Search.map(function(movie) {
+        return {
+          id: movie.imdbID,
+          poster: movie.Poster,
+          title: movie.Title,
+          year: movie.Year
+        };
+      });
+      renderMovies();
+    });
+  }
+
+  // Add event listener
+  $('button[type=submit]').on('click', function(event) {
+      event.preventDefault();
+
+      const searchTerm = $('#search').val();
+      if (searchTerm === "") {
+        Materialize.toast('Please enter a search term.', 4000);
+      }
+
+      getMovies(searchTerm);
+
+  })
 })();
