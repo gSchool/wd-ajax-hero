@@ -57,4 +57,37 @@
   };
 
   // ADD YOUR CODE HERE
+  //Add event listener to form to call search and alter the DOM
+  $('form').submit(function(event) {
+    event.preventDefault();
+    let val = $('#search').val();
+    if (val.length > 0) {
+      getMovies(val);
+    }
+  });
+
+  //function getMovies to grab movies from the search and alter the form so they're ready to pass to renderMovies
+  const getMovies = function(searchTerm) {
+    let $xhr = $.getJSON(`https://omdb-api.now.sh/?s=${searchTerm}`);
+
+    $xhr.done(function(data) {
+      if ($xhr.status !== 200){
+        return
+      };
+      //clears movies
+      movies.length = 0;
+      data['Search'].forEach(function (movie) {
+        let specific = movie['imdbID'];
+        let $xhr2 = $.getJSON(`https://omdbapi.com/?apikey=19099f8d&i=${specific}`);
+
+        $xhr2.done(function(plot) {
+          if ($xhr2.status !== 200) {
+            return
+          };
+          movies.push({'plot':plot['Plot'], 'title':movie['Title'], 'poster':movie['Poster'], 'id':movie['imdbID'], 'year':movie['Year'], 'type':movie['Type']});
+          renderMovies();
+        });
+      });
+    });
+  };
 })();
