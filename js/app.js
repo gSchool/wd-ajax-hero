@@ -43,6 +43,7 @@
       const $modalContent = $('<div>').addClass('modal-content');
       const $modalHeader = $('<h4>').text(movie.title);
       const $movieYear = $('<h6>').text(`Released in ${movie.year}`);
+      console.log(movie);
       const $modalText = $('<p>').text(movie.plot);
 
       $modalContent.append($modalHeader, $movieYear, $modalText);
@@ -86,11 +87,9 @@
             return;
           }
           movies[i].plot = data.Plot;
-          return movies;
+          renderMovies();
         })
       }
-      console.log(movies);
-      renderMovies();
     });
   }
 })();
