@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  const movies = [];
+  let movies = [];
 
   const renderMovies = function() {
     $('#listings').empty();
@@ -32,7 +32,7 @@
       const $action = $('<div>').addClass('card-action center');
       const $plot = $('<a>');
 
-      $plot.addClass('waves-effect waves-light btn modal-trigger');
+      $plot.addClass('waves-effect waves-light btn modal-trigger plot');
       $plot.attr('href', `#${movie.id}`);
       $plot.text('Plot Synopsis');
 
@@ -56,5 +56,47 @@
     }
   };
 
-  // ADD YOUR CODE HERE
+  const getMovies = function(searchTerm) {
+    const url = `https://www.omdbapi.com/?apikey=19099f8d&s=${searchTerm}`;
+    const $xhr = $.getJSON(url);
+
+    $xhr.done(function(data) {
+      if ($xhr.status!== 200) {
+        return
+      }
+      movies = data.Search.map(function(movie) {
+        return {
+          id: movie.imdbID,
+          poster: movie.Poster,
+          title: movie.Title,
+          year: movie.Year,
+        };
+      });
+
+//for every movie grab id and put that id in second json call.
+        for (const movie of movies) {
+          const url = `https://www.omdbapi.com/?apikey=19099f8d&i=${movie.id}&plot=full`;
+          const $xhrID = $.getJSON(url);
+
+          $xhrID.done(function(data) {
+            if ($xhrID.status!== 200) {
+              return
+            }
+            movie.plot = data.Plot;
+            renderMovies();
+          });
+        }
+      });
+};
+
+  $('button[type=submit]').on('click', function(event) {
+      event.preventDefault();
+
+      const searchTerm = $('#search').val();
+      if (searchTerm === "") {
+        Materialize.toast('Please enter a search term.', 4000);
+      }
+      getMovies(searchTerm);
+  });
+
 })();
