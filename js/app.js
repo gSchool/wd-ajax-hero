@@ -1,12 +1,13 @@
 (function() {
   'use strict';
 
-  const movies = [];
+  //const movies = [];
 
-  const renderMovies = function() {
+  const renderMovies = function(movies) {
     $('#listings').empty();
 
     for (const movie of movies) {
+      console.log(movies[0])
       const $col = $('<div>').addClass('col s6');
       const $card = $('<div>').addClass('card hoverable');
       const $content = $('<div>').addClass('card-content center');
@@ -57,4 +58,42 @@
   };
 
   // ADD YOUR CODE HERE
+  //put event handler on input form
+  $("form").on("submit", function(event) {
+    event.preventDefault();
+    getMovies( $("#search").val() );
+  });
+
+  //setup http event handler here to avoid nesting inside form event handler?
+  function getMovies(searchTerm) {
+    const $xhr = $.getJSON(`https://www.omdbapi.com/?apikey=19099f8d&s=${searchTerm}`);
+
+    $xhr.done(function(jsonResponse) {
+      if($xhr.status !== 200) {
+        return;
+      }
+
+      console.log(jsonResponse.Response === "True")
+      if(jsonResponse.Response === "True") {
+        var moviesArray = jsonResponse.Search.filter(function(item) {
+          return (item.Type === "movie");
+        });
+
+        if(moviesArray.length !== 0) {
+          moviesArray = moviesArray.map(function(item) {
+            return {
+              'id': item.imdbID,
+              'poster': item.Poster,
+              'title': item.Title,
+              'year': item.Year
+            };
+          });
+        }
+
+        renderMovies(moviesArray);
+      }
+
+    });
+  }
+
 })();
