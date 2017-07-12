@@ -17,10 +17,10 @@ More specifically, you'll need to extend the existing JavaScript with the follow
   <!-- - The API requires a key so you will need to send requests to this url instead: -->
     <!-- - https://omdb-api.now.sh/ -->
     <!-- - Example: https://omdb-api.now.sh/?s=star%20wars -->
-- Handle the HTTP response by pushing a new, well-formed `movie` object into the global `movies` array.
-- Render the `movies` array to the page by calling the `renderMovies()` function with no arguments.
+<!-- - Handle the HTTP response by pushing a new, well-formed `movie` object into the global `movies` array. -->
+<!-- - Render the `movies` array to the page by calling the `renderMovies()` function with no arguments. -->
 
-Each well-formed `movie` object in the `movies` array must have the following key-value pairs.
+<!-- Each well-formed `movie` object in the `movies` array must have the following key-value pairs. -->
 
 | Key      | Value                               |
 |----------|-------------------------------------|

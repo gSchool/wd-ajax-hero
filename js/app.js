@@ -62,20 +62,20 @@ $("#searchButton").click(function(e){
   if($("#search").val()){
     var search = $("#search").val();
     $.get("http://www.omdbapi.com/?s=" + search + "&apikey=702b3bb5", function(data){
-// console.log(data["Search"][0])
+console.log(data["Search"])
       for(var i = 0; i <data["Search"].length; i++){
-        var obj = {};
-        obj["id"] = data["Search"][i]["imdbID"];
-        obj["poster"] = data["Search"][i]["Poster"];
-        obj["title"] = data["Search"][i]["Title"];
-        obj["year"] = data["Search"][i]["Year"];
-
+      var obj = {};
+        obj["id"] = data["Search"][0]["imdbID"];
+        obj["poster"] = data["Search"][0]["Poster"];
+        obj["title"] = data["Search"][0]["Title"];
+        obj["year"] = data["Search"][0]["Year"];
 }
 movies.push(obj)
-console.log(movies)
+renderMovies();
     })
-
   }
 })
+// Bonus Question
+
 
 })();
