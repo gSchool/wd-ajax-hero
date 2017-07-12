@@ -58,7 +58,7 @@
           $('.modal-trigger').leanModal();
         }
       };
-//my code starts here
+      // ADD YOUR CODE HERE
       $(".btn-large").click(function() {
 
         event.preventDefault();
@@ -69,30 +69,35 @@
 
           var moviesArr = data["Search"];
           for (var i = 0; i < moviesArr.length; i++) {
-
             var moviesObj = {};
+
             moviesObj["id"] = moviesArr[i]["imdbID"];
             moviesObj["title"] = moviesArr[i]["Title"];
             moviesObj["year"] = moviesArr[i]["Year"];
             moviesObj["poster"] = moviesArr[i]["Poster"]
             movies.push(moviesObj)
+            // console.log(moviesObj)
+            // console.log(moviesObj["id"])
 
-
-            var movId = moviesObj["id"]
 
 
           };
           renderMovies();
-          $.get("http://www.omdbapi.com/?i=" + movId + "&apikey=702b3bb5", function(movData) {
-            // console.log(movData)
+          $(".btn").click(function() {
+            // console.log(event)
+            var movId = event.srcElement.hash.slice(1);
 
-            var plotData = movData["Plot"]
-            // console.log(plotData)
-            $(".modal-content").append(plotData)
+            $.get("http://www.omdbapi.com/?i=" + movId + "&apikey=702b3bb5", function(movData) {
+              // console.log(moviesObj)
+              // console.log(movId)
 
+
+              var plotData = movData["Plot"];
+              $(".plotText").empty()
+              $(".modal-content").append(`<p class="plotText">${plotData}</p>`);
+            })
           })
         })
       })
     })();
   })
-  // ADD YOUR CODE HERE
