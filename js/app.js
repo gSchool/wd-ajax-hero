@@ -55,6 +55,27 @@
       $('.modal-trigger').leanModal();
     }
   };
+// ADD YOUR CODE HERE
 
-  // ADD YOUR CODE HERE
+$("#searchButton").click(function(e){
+  e.preventDefault();
+  if($("#search").val()){
+    var search = $("#search").val();
+    $.get("http://www.omdbapi.com/?s=" + search + "&apikey=702b3bb5", function(data){
+// console.log(data["Search"][0])
+      for(var i = 0; i <data["Search"].length; i++){
+        var obj = {};
+        obj["id"] = data["Search"][i]["imdbID"];
+        obj["poster"] = data["Search"][i]["Poster"];
+        obj["title"] = data["Search"][i]["Title"];
+        obj["year"] = data["Search"][i]["Year"];
+
+}
+movies.push(obj)
+console.log(movies)
+    })
+
+  }
+})
+
 })();
