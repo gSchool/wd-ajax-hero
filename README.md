@@ -11,7 +11,7 @@ The web application should allow the user to browse movies by search keywords.
 More specifically, you'll need to extend the existing JavaScript with the following behavior.
 
 <!-- - Listen for submissions on the search form. Remember to prevent the default action. -->
-<!-- - Validate the user input is not blank. -->
+- Validate the user input is not blank.
 - Clear the previous search results.
 <!-- - Send an HTTP request to the [OMDB API](http://omdbapi.com/) search endpoint. -->
   <!-- - The API requires a key so you will need to send requests to this url instead: -->
