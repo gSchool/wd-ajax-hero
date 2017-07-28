@@ -57,4 +57,16 @@
   };
 
   // ADD YOUR CODE HERE
+  $("button").click(function(event){
+    event.preventDefault()
+    console.log("success")
+      if ($("#search").val() !== ""){
+        console.log("please enter value");
+        //else null "please enter value"
+      $('#listings').data().autocomplete.term = null;
+      }
+  });
+
+
+
 })();
