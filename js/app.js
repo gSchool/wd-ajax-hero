@@ -61,12 +61,30 @@
     event.preventDefault()
     console.log("success")
       if ($("#search").val() !== ""){
-        console.log("please enter value");
-        //else null "please enter value"
-      $('#listings').data().autocomplete.term = null;
-      }
+        $('#listings').empty();
+
+        $.get("https://omdb-api.now.sh/", function(data) {
+          data.forEach(movie) => {
+            MovieData.push(movie);
+          }
+          MovieData = data;
+        })
+        console.log(MovieData)
+        // $.ajax({
+        //   method: "GET",
+        //   url: "https://omdb-api.now.sh/"
+        // })
+        // .then(function (data) {
+        // //for each index of the data array given
+        // data.forEach((movie) => {
+        //   MovieData.push(movie);
+        // });
+        // MovieData = data;
+        // console.log("MovieData")
+
+
+        //End of ajax request
+      })
   });
-
-
 
 })();
