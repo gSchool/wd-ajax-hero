@@ -57,4 +57,37 @@
   };
 
   // ADD YOUR CODE HERE
+  $("button").click(function(event){
+    event.preventDefault()
+    console.log("success")
+      if ($("#search").val() !== ""){
+        $('#listings').empty();
+
+        $.ajax({
+          method: "GET",
+          url: "https://omdb-api.now.sh/"
+        })
+        .then(function (data) {
+          // console.log(data)
+        //for each index of the data array given
+        Object.keys(data).forEach((movie) => {
+          movies.push(data[movie]);
+          //console.log(movie)
+        });
+      //  movies = data;
+        console.log(movies)
+        });
+
+  }});
 })();
+
+
+
+
+
+
+
+
+
+
+//End of ajax request
